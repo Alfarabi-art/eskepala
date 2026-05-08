@@ -124,15 +124,6 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
     border-radius: 10px;
 }}
 
-/* STRUK */
-.receipt-box {{
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    border: 3px dashed #16a34a;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}}
-
 </style>
 """,
     unsafe_allow_html=True
@@ -405,11 +396,6 @@ with menu_tab:
                 # =====================
                 with st.container(border=True):
 
-                    st.markdown(
-                        '<div class="receipt-box">',
-                        unsafe_allow_html=True
-                    )
-
                     st.code(
                         f"""
 🥥 TOKO ES KELAPA
@@ -424,11 +410,6 @@ Tanggal : {transaksi['tanggal']}
 {struk}
 """,
                         language=None
-                    )
-
-                    st.markdown(
-                        "</div>",
-                        unsafe_allow_html=True
                     )
 
                 st.balloons()
@@ -497,8 +478,7 @@ with keuangan_tab:
     else:
 
         for trx in reversed(
-            st.session_state
-            .riwayat_transaksi
+            st.session_state.riwayat_transaksi
         ):
 
             with st.container(border=True):
