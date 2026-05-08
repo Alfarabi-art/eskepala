@@ -10,9 +10,172 @@ st.set_page_config(
 )
 
 # =========================
-# VIDEO BACKGROUND URL
+# VIDEO BACKGROUND
 # =========================
-bg_video_url = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/refs/heads/main/bg.mp4"
+bg_video_url = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/main/bg.mp4"
+
+# =========================
+# STYLE
+# =========================
+st.markdown(
+    f"""
+<style>
+
+/* =========================
+VIDEO BACKGROUND
+========================= */
+.video-container {{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -100;
+}}
+
+.video-container video {{
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    filter: brightness(0.45);
+}}
+
+/* =========================
+GLOBAL
+========================= */
+.stApp {{
+    background: rgba(0,0,0,0.20);
+}}
+
+h1, h2, h3, h4, h5, h6, p, label {{
+    color: white !important;
+}}
+
+[data-testid="stHeader"] {{
+    background: rgba(0,0,0,0);
+}}
+
+[data-testid="stToolbar"] {{
+    right: 2rem;
+}}
+
+/* =========================
+CARD
+========================= */
+div[data-testid="stVerticalBlockBorderWrapper"] {{
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 15px;
+    margin-bottom: 15px;
+}}
+
+/* =========================
+BUTTON
+========================= */
+.stButton button {{
+    width: 100%;
+    border-radius: 14px;
+    border: none;
+    background: #16a34a;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    font-size: 16px;
+}}
+
+.stButton button:hover {{
+    background: #15803d;
+    color: white;
+}}
+
+/* =========================
+INPUT
+========================= */
+.stNumberInput input {{
+    background: rgba(255,255,255,0.92);
+    color: black;
+    border-radius: 10px;
+}}
+
+.stSelectbox div[data-baseweb="select"] {{
+    background: rgba(255,255,255,0.92);
+    color: black;
+    border-radius: 10px;
+}}
+
+/* =========================
+STRUK
+========================= */
+.struk-box {{
+    background: white;
+    color: black;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    font-family: monospace;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: auto;
+}}
+
+.struk-box pre {{
+    white-space: pre-wrap;
+    margin: 0;
+    color: black;
+}}
+
+/* =========================
+IMAGE
+========================= */
+img {{
+    border-radius: 15px;
+}}
+
+/* =========================
+MOBILE
+========================= */
+@media (max-width: 768px) {{
+
+    h1 {{
+        font-size: 28px !important;
+        text-align: center;
+    }}
+
+    h2 {{
+        font-size: 24px !important;
+    }}
+
+    h3 {{
+        font-size: 20px !important;
+    }}
+
+    .struk-box {{
+        font-size: 13px;
+        padding: 15px;
+    }}
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {{
+        padding: 12px;
+    }}
+
+    .stButton button {{
+        font-size: 14px;
+    }}
+}}
+
+</style>
+
+<div class="video-container">
+    <video autoplay muted loop playsinline webkit-playsinline>
+        <source src="{bg_video_url}" type="video/mp4">
+    </video>
+</div>
+""",
+    unsafe_allow_html=True
+)
 
 # =========================
 # DATA MENU
@@ -22,201 +185,48 @@ menu = [
         "id": 1,
         "nama": "Es Kelapa + Gula",
         "harga": 4000,
-        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg",
+        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg"
     },
     {
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg",
+        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg"
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg",
+        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg"
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg",
-    },
+        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg"
+    }
 ]
 
 # =========================
-# SESSION STATE
+# SESSION
 # =========================
 if "keranjang" not in st.session_state:
     st.session_state.keranjang = []
 
-if "riwayat_transaksi" not in st.session_state:
-    st.session_state.riwayat_transaksi = []
-
-# =========================
-# STYLE
-# =========================
-st.markdown(
-    f"""
-<style>
-
-/* VIDEO BACKGROUND */
-#bg-video {{
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-    z-index: -100;
-    pointer-events: none;
-    filter: brightness(0.6);
-}}
-
-/* VIDEO SUPPORT */
-video {{
-    object-fit: cover;
-}}
-
-/* OVERLAY */
-.stApp {{
-    background: rgba(0,0,0,0.35);
-}}
-
-/* TEXT */
-h1, h2, h3, h4, h5, h6, p, label {{
-    color: white !important;
-}}
-
-/* CARD */
-div[data-testid="stVerticalBlockBorderWrapper"] {{
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 15px;
-    border: 1px solid rgba(255,255,255,0.15);
-    margin-bottom: 15px;
-}}
-
-/* BUTTON */
-.stButton button {{
-    background-color: #16a34a;
-    color: white;
-    border-radius: 12px;
-    border: none;
-    padding: 12px;
-    font-weight: bold;
-    width: 100%;
-    font-size: 16px;
-}}
-
-.stButton button:hover {{
-    background-color: #15803d;
-    color: white;
-}}
-
-/* INPUT */
-.stNumberInput input {{
-    background-color: rgba(255,255,255,0.95);
-    color: black;
-    border-radius: 10px;
-}}
-
-.stSelectbox div[data-baseweb="select"] {{
-    background-color: rgba(255,255,255,0.95);
-    color: black;
-    border-radius: 10px;
-}}
-
-/* STRUK */
-.stCode {{
-    border-radius: 20px !important;
-    font-size: 16px !important;
-    padding: 15px !important;
-    background: white !important;
-    color: black !important;
-    overflow-x: auto;
-}}
-
-/* IMAGE */
-img {{
-    border-radius: 15px;
-}}
-
-/* MOBILE */
-@media (max-width: 768px) {{
-
-    h1 {{
-        font-size: 28px !important;
-        text-align: center;
-    }}
-
-    h2 {{
-        font-size: 22px !important;
-    }}
-
-    h3 {{
-        font-size: 20px !important;
-    }}
-
-    div[data-testid="stVerticalBlockBorderWrapper"] {{
-        padding: 12px;
-        border-radius: 18px;
-    }}
-
-    .stButton button {{
-        font-size: 15px;
-        padding: 12px;
-    }}
-
-    .stCode {{
-        font-size: 13px !important;
-        padding: 10px !important;
-    }}
-
-    img {{
-        border-radius: 12px;
-    }}
-}}
-
-@media (max-width: 480px) {{
-
-    h1 {{
-        font-size: 24px !important;
-    }}
-
-    .stButton button {{
-        font-size: 14px;
-    }}
-
-    .stCode {{
-        font-size: 12px !important;
-    }}
-}}
-
-</style>
-
-<video autoplay muted loop playsinline webkit-playsinline id="bg-video">
-    <source src="{bg_video_url}" type="video/mp4">
-</video>
-
-""",
-    unsafe_allow_html=True
-)
+if "riwayat" not in st.session_state:
+    st.session_state.riwayat = []
 
 # =========================
 # TITLE
 # =========================
 st.title("🥥 Kasir Es Kelapa")
 
-menu_tab, keuangan_tab = st.tabs(
-    ["Kasir", "Keuangan"]
-)
+tab1, tab2 = st.tabs(["Kasir", "Keuangan"])
 
 # =========================
 # TAB KASIR
 # =========================
-with menu_tab:
+with tab1:
 
     col1, col2 = st.columns(2)
 
@@ -236,13 +246,8 @@ with menu_tab:
                     use_container_width=True
                 )
 
-                st.write(
-                    f"### {item['nama']}"
-                )
-
-                st.write(
-                    f"Rp {item['harga']:,}"
-                )
+                st.write(f"## {item['nama']}")
+                st.write(f"Rp {item['harga']:,}")
 
                 qty = st.number_input(
                     f"Qty {item['nama']}",
@@ -256,27 +261,25 @@ with menu_tab:
                     key=f"btn_{item['id']}"
                 ):
 
-                    found = False
+                    ditemukan = False
 
-                    for keranjang_item in st.session_state.keranjang:
+                    for k in st.session_state.keranjang:
 
-                        if keranjang_item["nama"] == item["nama"]:
+                        if k["nama"] == item["nama"]:
 
-                            keranjang_item["qty"] += qty
-                            found = True
+                            k["qty"] += qty
+                            ditemukan = True
                             break
 
-                    if not found:
+                    if not ditemukan:
 
                         st.session_state.keranjang.append({
                             "nama": item["nama"],
                             "harga": item["harga"],
-                            "qty": qty,
+                            "qty": qty
                         })
 
-                    st.success(
-                        f"{item['nama']} ditambahkan"
-                    )
+                    st.success("Berhasil ditambahkan")
 
     # =====================
     # KERANJANG
@@ -295,17 +298,10 @@ with menu_tab:
 
             for item in st.session_state.keranjang:
 
-                subtotal = (
-                    item["harga"]
-                    * item["qty"]
-                )
-
+                subtotal = item["harga"] * item["qty"]
                 total += subtotal
 
-                st.write(
-                    f"### {item['nama']}"
-                )
-
+                st.write(f"### {item['nama']}")
                 st.write(
                     f"{item['qty']} x Rp {item['harga']:,}"
                 )
@@ -316,9 +312,7 @@ with menu_tab:
 
                 st.divider()
 
-        st.write(
-            f"## Total: Rp {total:,}"
-        )
+        st.write(f"# Total: Rp {total:,}")
 
         metode = st.selectbox(
             "Metode Pembayaran",
@@ -348,7 +342,7 @@ with menu_tab:
             else:
 
                 st.error(
-                    "Uang pelanggan kurang"
+                    "Uang kurang"
                 )
 
         # =====================
@@ -359,7 +353,7 @@ with menu_tab:
             if total == 0:
 
                 st.warning(
-                    "Keranjang masih kosong"
+                    "Keranjang kosong"
                 )
 
             elif uang < total:
@@ -370,33 +364,13 @@ with menu_tab:
 
             else:
 
-                transaksi = {
-                    "tanggal": datetime.now().strftime(
-                        "%Y-%m-%d %H:%M:%S"
-                    ),
-                    "total": total,
-                    "metode": metode,
-                    "detail": (
-                        st.session_state
-                        .keranjang
-                        .copy()
-                    )
-                }
-
-                st.session_state.riwayat_transaksi.append(
-                    transaksi
+                tanggal = datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"
                 )
 
-                st.success(
-                    "Struk berhasil dicetak"
-                )
+                isi = ""
 
-                # =====================
-                # STRUK
-                # =====================
-                struk = ""
-
-                for item in transaksi["detail"]:
+                for item in st.session_state.keranjang:
 
                     subtotal = (
                         item["harga"]
@@ -412,92 +386,91 @@ with menu_tab:
                         f"Rp {subtotal:,}"
                     )
 
-                    struk += (
+                    isi += (
                         f"{item['nama']}\n"
                     )
 
-                    struk += (
+                    isi += (
                         f"{kiri:<25}"
                         f"{kanan:>15}\n"
                     )
 
-                    struk += (
+                    isi += (
                         "-" * 40 + "\n"
                     )
 
-                struk += (
+                isi += (
                     f"{'TOTAL':<20}"
                     f": Rp {total:,}\n"
                 )
 
-                struk += (
+                isi += (
                     f"{'PEMBAYARAN':<20}"
                     f": {metode}\n"
                 )
 
-                struk += (
+                isi += (
                     f"{'TUNAI':<20}"
                     f": Rp {uang:,}\n"
                 )
 
-                struk += (
+                isi += (
                     f"{'KEMBALIAN':<20}"
                     f": Rp {kembalian:,}\n"
                 )
 
-                struk += "=" * 40 + "\n"
+                isi += "=" * 40 + "\n"
 
-                struk += (
-                    "Terima Kasih 🙏\n"
+                isi += "Terima Kasih 🙏\n"
+                isi += "Semoga harimu segar 🥥"
+
+                st.success(
+                    "Struk berhasil dicetak"
                 )
 
-                struk += (
-                    "Semoga harimu segar 🥥"
-                )
-
-                # =====================
-                # TAMPILKAN STRUK
-                # =====================
-                with st.container(border=True):
-
-                    st.code(
-                        f"""
+                st.markdown(
+                    f"""
+<div class="struk-box">
+<pre>
 🥥 TOKO ES KELAPA
 Fresh Coconut Drink
 
 ========================================
 
-Tanggal : {transaksi['tanggal']}
+Tanggal : {tanggal}
 
 ========================================
 
-{struk}
+{isi}
+</pre>
+</div>
 """,
-                        language=None
-                    )
+                    unsafe_allow_html=True
+                )
 
-                st.balloons()
+                st.session_state.riwayat.append({
+                    "tanggal": tanggal,
+                    "total": total,
+                    "metode": metode
+                })
 
-                # =====================
-                # RESET KERANJANG
-                # =====================
                 st.session_state.keranjang = []
 
 # =========================
 # TAB KEUANGAN
 # =========================
-with keuangan_tab:
+with tab2:
 
     st.subheader("Laporan Keuangan")
 
-    total_pemasukan = sum(
-        trx["total"]
-        for trx
-        in st.session_state.riwayat_transaksi
+    total_uang = sum(
+        x["total"]
+        for x
+        in st.session_state.riwayat
     )
 
-    total_transaksi = len(
-        st.session_state.riwayat_transaksi
+    jumlah = len(
+        st.session_state.riwayat
     )
 
     col1, col2 = st.columns(2)
@@ -506,21 +479,19 @@ with keuangan_tab:
 
         st.metric(
             "Total Pemasukan",
-            f"Rp {total_pemasukan:,}"
+            f"Rp {total_uang:,}"
         )
 
     with col2:
 
         st.metric(
             "Jumlah Transaksi",
-            total_transaksi
+            jumlah
         )
 
     st.divider()
 
-    if len(
-        st.session_state.riwayat_transaksi
-    ) == 0:
+    if jumlah == 0:
 
         st.info(
             "Belum ada transaksi"
@@ -529,7 +500,7 @@ with keuangan_tab:
     else:
 
         for trx in reversed(
-            st.session_state.riwayat_transaksi
+            st.session_state.riwayat
         ):
 
             with st.container(border=True):
