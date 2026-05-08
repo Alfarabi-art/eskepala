@@ -1,22 +1,22 @@
 import streamlit as st
 from datetime import datetime
 
-# =========================
+# ====================================
 # CONFIG
-# =========================
+# ====================================
 st.set_page_config(
     page_title="Kasir Es Kelapa",
     layout="wide"
 )
 
-# =========================
+# ====================================
 # VIDEO BACKGROUND
-# =========================
+# ====================================
 bg_video_url = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/main/bg.mp4"
 
-# =========================
+# ====================================
 # STYLE
-# =========================
+# ====================================
 st.markdown(
     f"""
 <style>
@@ -45,7 +45,7 @@ VIDEO BACKGROUND
 GLOBAL
 ========================= */
 .stApp {{
-    background: rgba(0,0,0,0.20);
+    background: rgba(0,0,0,0.25);
 }}
 
 h1, h2, h3, h4, h5, h6, p, label {{
@@ -111,7 +111,6 @@ STRUK
 ========================= */
 .struk-box {{
     background: white;
-    color: black;
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.25);
@@ -125,6 +124,10 @@ STRUK
     white-space: pre-wrap;
     margin: 0;
     color: black;
+}}
+
+.struk-box * {{
+    color: black !important;
 }}
 
 /* =========================
@@ -173,66 +176,67 @@ MOBILE
         <source src="{bg_video_url}" type="video/mp4">
     </video>
 </div>
+
 """,
     unsafe_allow_html=True
 )
 
-# =========================
+# ====================================
 # DATA MENU
-# =========================
+# ====================================
 menu = [
     {
         "id": 1,
         "nama": "Es Kelapa + Gula",
         "harga": 4000,
-        "gambar": "images/eskepalagula.jpg"
+        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg"
     },
     {
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "images/kelapasusu.jpg"
+        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg"
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "images/kelapamurni.jpg"
+        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg"
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "images/airkelapa.jpg"
+        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg"
     }
 ]
 
-# =========================
+# ====================================
 # SESSION
-# =========================
+# ====================================
 if "keranjang" not in st.session_state:
     st.session_state.keranjang = []
 
 if "riwayat" not in st.session_state:
     st.session_state.riwayat = []
 
-# =========================
+# ====================================
 # TITLE
-# =========================
+# ====================================
 st.title("🥥 Kasir Es Kelapa")
 
 tab1, tab2 = st.tabs(["Kasir", "Keuangan"])
 
-# =========================
+# ====================================
 # TAB KASIR
-# =========================
+# ====================================
 with tab1:
 
     col1, col2 = st.columns(2)
 
-    # =====================
+    # =========================
     # MENU
-    # =====================
+    # =========================
     with col1:
 
         st.subheader("Menu")
@@ -266,13 +270,11 @@ with tab1:
                     for k in st.session_state.keranjang:
 
                         if k["nama"] == item["nama"]:
-
                             k["qty"] += qty
                             ditemukan = True
                             break
 
                     if not ditemukan:
-
                         st.session_state.keranjang.append({
                             "nama": item["nama"],
                             "harga": item["harga"],
@@ -281,9 +283,9 @@ with tab1:
 
                     st.success("Berhasil ditambahkan")
 
-    # =====================
+    # =========================
     # KERANJANG
-    # =====================
+    # =========================
     with col2:
 
         st.subheader("Keranjang")
@@ -334,33 +336,24 @@ with tab1:
         if uang > 0:
 
             if uang >= total:
-
                 st.success(
                     f"Kembalian: Rp {kembalian:,}"
                 )
-
             else:
+                st.error("Uang kurang")
 
-                st.error(
-                    "Uang kurang"
-                )
-
-        # =====================
+        # =========================
         # CETAK STRUK
-        # =====================
+        # =========================
         if st.button("Cetak Struk"):
 
             if total == 0:
 
-                st.warning(
-                    "Keranjang kosong"
-                )
+                st.warning("Keranjang kosong")
 
             elif uang < total:
 
-                st.error(
-                    "Pembayaran belum cukup"
-                )
+                st.error("Pembayaran belum cukup")
 
             else:
 
@@ -424,9 +417,7 @@ with tab1:
                 isi += "Terima Kasih 🙏\n"
                 isi += "Semoga harimu segar 🥥"
 
-                st.success(
-                    "Struk berhasil dicetak"
-                )
+                st.success("Struk berhasil dicetak")
 
                 st.markdown(
                     f"""
@@ -456,9 +447,9 @@ Tanggal : {tanggal}
 
                 st.session_state.keranjang = []
 
-# =========================
+# ====================================
 # TAB KEUANGAN
-# =========================
+# ====================================
 with tab2:
 
     st.subheader("Laporan Keuangan")
@@ -493,9 +484,7 @@ with tab2:
 
     if jumlah == 0:
 
-        st.info(
-            "Belum ada transaksi"
-        )
+        st.info("Belum ada transaksi")
 
     else:
 
