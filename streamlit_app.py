@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import datetime
-import base64
 
 # =========================
 # CONFIG
@@ -11,16 +10,9 @@ st.set_page_config(
 )
 
 # =========================
-# VIDEO BACKGROUND
+# VIDEO BACKGROUND URL
 # =========================
-def get_video_base64(file_path):
-    with open(file_path, "rb") as f:
-        data = f.read()
-
-    return base64.b64encode(data).decode()
-
-# simpan bg.mp4 di folder yang sama
-bg_video = get_video_base64("bg.mp4")
+bg_video_url = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/refs/heads/main/bg.mp4"
 
 # =========================
 # DATA MENU
@@ -77,25 +69,32 @@ st.markdown(
     min-height: 100%;
     object-fit: cover;
     z-index: -100;
+    pointer-events: none;
+    filter: brightness(0.6);
+}}
+
+/* VIDEO SUPPORT */
+video {{
+    object-fit: cover;
 }}
 
 /* OVERLAY */
 .stApp {{
-    background: rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.35);
 }}
 
 /* TEXT */
 h1, h2, h3, h4, h5, h6, p, label {{
-    color: white;
+    color: white !important;
 }}
 
 /* CARD */
 div[data-testid="stVerticalBlockBorderWrapper"] {{
     background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border-radius: 20px;
     padding: 15px;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.15);
     margin-bottom: 15px;
 }}
 
@@ -197,8 +196,8 @@ img {{
 
 </style>
 
-<video autoplay muted loop id="bg-video">
-    <source src="data:video/mp4;base64,{bg_video}" type="video/mp4">
+<video autoplay muted loop playsinline webkit-playsinline id="bg-video">
+    <source src="{bg_video_url}" type="video/mp4">
 </video>
 
 """,
@@ -338,9 +337,6 @@ with menu_tab:
 
         kembalian = uang - total
 
-        # =====================
-        # KEMBALIAN
-        # =====================
         if uang > 0:
 
             if uang >= total:
@@ -374,19 +370,12 @@ with menu_tab:
 
             else:
 
-                total_item = sum(
-                    item["qty"]
-                    for item
-                    in st.session_state.keranjang
-                )
-
                 transaksi = {
                     "tanggal": datetime.now().strftime(
                         "%Y-%m-%d %H:%M:%S"
                     ),
                     "total": total,
                     "metode": metode,
-                    "jumlah_item": total_item,
                     "detail": (
                         st.session_state
                         .keranjang
@@ -414,10 +403,6 @@ with menu_tab:
                         * item["qty"]
                     )
 
-                    struk += (
-                        f"{item['nama']}\n"
-                    )
-
                     kiri = (
                         f"{item['qty']} x "
                         f"Rp {item['harga']:,}"
@@ -425,6 +410,10 @@ with menu_tab:
 
                     kanan = (
                         f"Rp {subtotal:,}"
+                    )
+
+                    struk += (
+                        f"{item['nama']}\n"
                     )
 
                     struk += (
@@ -490,7 +479,7 @@ Tanggal : {transaksi['tanggal']}
                 st.balloons()
 
                 # =====================
-                # KOSONGKAN KERANJANG
+                # RESET KERANJANG
                 # =====================
                 st.session_state.keranjang = []
 
@@ -511,13 +500,7 @@ with keuangan_tab:
         st.session_state.riwayat_transaksi
     )
 
-    total_item = sum(
-        trx["jumlah_item"]
-        for trx
-        in st.session_state.riwayat_transaksi
-    )
-
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
 
@@ -531,13 +514,6 @@ with keuangan_tab:
         st.metric(
             "Jumlah Transaksi",
             total_transaksi
-        )
-
-    with col3:
-
-        st.metric(
-            "Item Terjual",
-            total_item
         )
 
     st.divider()
@@ -568,8 +544,4 @@ with keuangan_tab:
 
                 st.write(
                     f"Metode : {trx['metode']}"
-                )
-
-                st.write(
-                    f"Jumlah Item : {trx['jumlah_item']}"
                 )
