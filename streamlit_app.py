@@ -272,41 +272,19 @@ with menu_tab:
                 )
 
                 # =====================
-                # HTML STRUK
+                # STRUK TEXT
                 # =====================
-                struk_html = f"""
-                <div style="
-                    background:white;
-                    padding:25px;
-                    border-radius:15px;
-                    border:2px dashed #999;
-                    max-width:450px;
-                    margin:auto;
-                    font-family:monospace;
-                    color:black;
-                ">
+                struk = ""
+                struk += "🥥 TOKO ES KELAPA\n"
+                struk += "Fresh Coconut Drink\n"
+                struk += "=" * 40 + "\n"
+                struk += (
+                    f"Tanggal : "
+                    f"{transaksi['tanggal']}\n"
+                )
+                struk += "=" * 40 + "\n"
 
-                <h2 style="text-align:center;">
-                🥥 TOKO ES KELAPA
-                </h2>
-
-                <p style="text-align:center;color:gray;">
-                Fresh Coconut Drink
-                </p>
-
-                <hr>
-
-                <p>
-                <b>Tanggal:</b>
-                {transaksi['tanggal']}
-                </p>
-
-                <hr>
-                """
-
-                # =====================
                 # DETAIL ITEM
-                # =====================
                 for item in transaksi["detail"]:
 
                     subtotal = (
@@ -314,113 +292,65 @@ with menu_tab:
                         * item["qty"]
                     )
 
-                    struk_html += f"""
-                    <div style="
-                        margin-bottom:15px;
-                        padding:10px;
-                        background:#f5f5f5;
-                        border-radius:10px;
-                    ">
+                    struk += (
+                        f"{item['nama']}\n"
+                    )
 
-                    <b>{item['nama']}</b>
+                    kiri = (
+                        f"{item['qty']} x "
+                        f"Rp {item['harga']:,}"
+                    )
 
-                    <table width="100%" style="
-                        margin-top:8px;
-                        font-size:15px;
-                    ">
-                        <tr>
-                            <td>
-                                {item['qty']} x Rp {item['harga']:,}
-                            </td>
+                    kanan = (
+                        f"Rp {subtotal:,}"
+                    )
 
-                            <td align="right">
-                                Rp {subtotal:,}
-                            </td>
-                        </tr>
-                    </table>
+                    struk += (
+                        f"{kiri:<25}"
+                        f"{kanan:>15}\n"
+                    )
 
-                    </div>
-                    """
+                    struk += (
+                        "-" * 40 + "\n"
+                    )
 
-                # =====================
                 # TOTAL
-                # =====================
-                struk_html += f"""
-
-                <hr>
-
-                <table width="100%" style="
-                    font-size:16px;
-                    line-height:2;
-                ">
-
-                <tr>
-                    <td><b>TOTAL</b></td>
-                    <td align="right">
-                        Rp {total:,}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>PEMBAYARAN</b></td>
-                    <td align="right">
-                        {metode}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td><b>TUNAI</b></td>
-                    <td align="right">
-                        Rp {uang:,}
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <b style="color:green;">
-                        KEMBALIAN
-                        </b>
-                    </td>
-
-                    <td align="right">
-                        <b style="color:green;">
-                        Rp {kembalian:,}
-                        </b>
-                    </td>
-                </tr>
-
-                </table>
-
-                <hr>
-
-                <p style="
-                    text-align:center;
-                    font-weight:bold;
-                    font-size:18px;
-                ">
-                    Terima Kasih 🙏
-                </p>
-
-                <p style="
-                    text-align:center;
-                    color:gray;
-                    font-size:13px;
-                ">
-                    Semoga harimu segar seperti kelapa 🥥
-                </p>
-
-                </div>
-                """
-
-                # tampilkan struk
-                st.markdown(
-                    struk_html,
-                    unsafe_allow_html=True
+                struk += (
+                    f"{'TOTAL':<20}"
+                    f": Rp {total:,}\n"
                 )
+
+                struk += (
+                    f"{'PEMBAYARAN':<20}"
+                    f": {metode}\n"
+                )
+
+                struk += (
+                    f"{'TUNAI':<20}"
+                    f": Rp {uang:,}\n"
+                )
+
+                struk += (
+                    f"{'KEMBALIAN':<20}"
+                    f": Rp {kembalian:,}\n"
+                )
+
+                struk += "=" * 40 + "\n"
+
+                struk += (
+                    "Terima Kasih 🙏\n"
+                )
+
+                struk += (
+                    "Semoga harimu segar 🥥"
+                )
+
+                # TAMPILKAN STRUK
+                st.code(struk)
 
                 st.balloons()
 
-                # kosongkan keranjang
+                # KOSONGKAN KERANJANG
                 st.session_state.keranjang = []
 
 # =========================
