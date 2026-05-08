@@ -30,25 +30,25 @@ menu = [
         "id": 1,
         "nama": "Es Kelapa + Gula",
         "harga": 4000,
-        "gambar": "images/eskepalagula.jpg",
+        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg",
     },
     {
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "images/kelapasusu.jpg",
+        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg",
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "images/kelapamurni.jpg",
+        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg",
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "images/airkelapa.jpg",
+        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg",
     },
 ]
 
@@ -83,7 +83,7 @@ st.markdown(
 }}
 
 /* TEXT */
-h1, h2, h3, h4, h5, h6, p, label, div {{
+h1, h2, h3, h4, h5, h6, p, label {{
     color: white;
 }}
 
@@ -122,6 +122,15 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
     background-color: rgba(255,255,255,0.9);
     color: black;
     border-radius: 10px;
+}}
+
+/* STRUK */
+.receipt-box {{
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border: 3px dashed #16a34a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }}
 
 </style>
@@ -331,7 +340,6 @@ with menu_tab:
                 # =====================
                 struk = ""
 
-                # DETAIL ITEM
                 for item in transaksi["detail"]:
 
                     subtotal = (
@@ -395,28 +403,15 @@ with menu_tab:
                 # =====================
                 # TAMPILKAN STRUK
                 # =====================
-                st.markdown(
-                    f"""
-                    <div style="
-                        background: white;
-                        color: black;
-                        padding: 25px;
-                        border-radius: 20px;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-                        font-family: monospace;
-                        font-size: 18px;
-                        line-height: 1.8;
-                        border: 3px dashed #16a34a;
-                    ">
+                with st.container(border=True):
 
-<pre style="
-margin:0;
-white-space:pre-wrap;
-font-family:monospace;
-font-size:18px;
-color:black;
-">
+                    st.markdown(
+                        '<div class="receipt-box">',
+                        unsafe_allow_html=True
+                    )
 
+                    st.code(
+                        f"""
 🥥 TOKO ES KELAPA
 Fresh Coconut Drink
 
@@ -427,13 +422,14 @@ Tanggal : {transaksi['tanggal']}
 ========================================
 
 {struk}
-
-</pre>
-
-</div>
 """,
-                    unsafe_allow_html=True
-                )
+                        language=None
+                    )
+
+                    st.markdown(
+                        "</div>",
+                        unsafe_allow_html=True
+                    )
 
                 st.balloons()
 
