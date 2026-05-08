@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime
+import base64
 
 # =========================
 # CONFIG
@@ -10,6 +11,18 @@ st.set_page_config(
 )
 
 # =========================
+# BACKGROUND IMAGE
+# =========================
+def get_base64(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+
+    return base64.b64encode(data).decode()
+
+# GANTI jika nama file berbeda
+bg_image = get_base64("bg.jpg")
+
+# =========================
 # DATA MENU
 # =========================
 menu = [
@@ -17,25 +30,25 @@ menu = [
         "id": 1,
         "nama": "Es Kelapa + Gula",
         "harga": 4000,
-        "gambar": "images/eskepalagula.jpg",
+        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg",
     },
     {
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "images/kelapasusu.jpg",
+        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg",
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "images/kelapamurni.jpg",
+        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg",
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "images/airkelapa.jpg",
+        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg",
     },
 ]
 
@@ -51,34 +64,70 @@ if "riwayat_transaksi" not in st.session_state:
 # =========================
 # STYLE
 # =========================
-st.markdown("""
+st.markdown(
+    f"""
 <style>
 
-.main {
-    background: linear-gradient(
-        to bottom right,
-        #dcfce7,
-        #bbf7d0,
-        #86efac
-    );
-}
+/* BACKGROUND */
+.stApp {{
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.45)
+        ),
+        url("data:image/jpg;base64,{bg_image}");
 
-.stButton button {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}}
+
+/* TEXT */
+h1, h2, h3, h4, h5, h6, p, label, div {{
+    color: white;
+}}
+
+/* CARD */
+div[data-testid="stVerticalBlockBorderWrapper"] {{
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+}}
+
+/* BUTTON */
+.stButton button {{
     background-color: #16a34a;
     color: white;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
     padding: 10px;
     font-weight: bold;
-}
+    width: 100%;
+}}
 
-.stButton button:hover {
+.stButton button:hover {{
     background-color: #15803d;
     color: white;
-}
+}}
+
+/* INPUT */
+.stNumberInput input {{
+    background-color: rgba(255,255,255,0.9);
+    color: black;
+}}
+
+.stSelectbox div[data-baseweb="select"] {{
+    background-color: rgba(255,255,255,0.9);
+    color: black;
+    border-radius: 10px;
+}}
 
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True
+)
 
 # =========================
 # TITLE
@@ -112,8 +161,13 @@ with menu_tab:
                     use_container_width=True
                 )
 
-                st.write(f"### {item['nama']}")
-                st.write(f"Rp {item['harga']:,}")
+                st.write(
+                    f"### {item['nama']}"
+                )
+
+                st.write(
+                    f"Rp {item['harga']:,}"
+                )
 
                 qty = st.number_input(
                     f"Qty {item['nama']}",
@@ -132,6 +186,7 @@ with menu_tab:
                     for keranjang_item in st.session_state.keranjang:
 
                         if keranjang_item["nama"] == item["nama"]:
+
                             keranjang_item["qty"] += qty
                             found = True
                             break
@@ -272,7 +327,7 @@ with menu_tab:
                 )
 
                 # =====================
-                # STRUK TEXT
+                # STRUK
                 # =====================
                 struk = ""
                 struk += "🥥 TOKO ES KELAPA\n"
