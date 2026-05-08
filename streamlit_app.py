@@ -301,45 +301,82 @@ with menu_tab:
 
                 for item in transaksi["detail"]:
 
-                    subtotal = (
-                        item["harga"]
-                        * item["qty"]
-                    )
+    subtotal = (
+        item["harga"]
+        * item["qty"]
+    )
 
-                    struk_html += dedent(f"""
-                    <div style="
-                        margin-bottom:15px;
-                        line-height:1.7;
-                    ">
-                        <b>{item['nama']}</b><br>
+    struk_html += dedent(f"""
+    <div style="
+        margin-bottom:18px;
+        padding:12px;
+        border-radius:10px;
+        background:#f8fafc;
+        font-size:16px;
+    ">
 
-                        {item['qty']} x
-                        Rp {item['harga']:,}<br>
+        <div style="
+            font-weight:bold;
+            margin-bottom:8px;
+        ">
+            {item['nama']}
+        </div>
 
-                        = Rp {subtotal:,}
-                    </div>
-                    """)
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:5px;
+        ">
+            <span>{item['qty']} x Rp {item['harga']:,}</span>
+            <span>Rp {subtotal:,}</span>
+        </div>
+
+    </div>
+    """)
 
                 struk_html += dedent(f"""
                 <hr>
 
                 <div style="
-                    line-height:1.8;
-                ">
+    line-height:2;
+    font-size:16px;
+">
 
-                <b>TOTAL :</b>
-                Rp {total:,}<br>
+<div style="
+    display:flex;
+    justify-content:space-between;
+">
+    <b>TOTAL</b>
+    <span>Rp {total:,}</span>
+</div>
 
-                <b>PEMBAYARAN :</b>
-                {metode}<br>
+<div style="
+    display:flex;
+    justify-content:space-between;
+">
+    <b>PEMBAYARAN</b>
+    <span>{metode}</span>
+</div>
 
-                <b>TUNAI :</b>
-                Rp {uang:,}<br>
+<div style="
+    display:flex;
+    justify-content:space-between;
+">
+    <b>TUNAI</b>
+    <span>Rp {uang:,}</span>
+</div>
 
-                <b>KEMBALIAN :</b>
-                Rp {kembalian:,}
+<div style="
+    display:flex;
+    justify-content:space-between;
+    color:green;
+    font-weight:bold;
+">
+    <b>KEMBALIAN</b>
+    <span>Rp {kembalian:,}</span>
+</div>
 
-                </div>
+</div>
 
                 <hr>
 
