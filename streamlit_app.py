@@ -11,7 +11,7 @@ st.set_page_config(
 )
 
 # =========================
-# MENU
+# DATA MENU
 # =========================
 menu = [
     {
@@ -41,7 +41,7 @@ menu = [
 ]
 
 # =========================
-# SESSION
+# SESSION STATE
 # =========================
 if "keranjang" not in st.session_state:
     st.session_state.keranjang = []
@@ -173,16 +173,22 @@ with menu_tab:
                 total += subtotal
 
                 st.write(
-                    f"{item['nama']} x {item['qty']}"
+                    f"### {item['nama']}"
                 )
 
                 st.write(
-                    f"Rp {subtotal:,}"
+                    f"{item['qty']} x Rp {item['harga']:,}"
+                )
+
+                st.write(
+                    f"Subtotal : Rp {subtotal:,}"
                 )
 
                 st.divider()
 
-        st.write(f"## Total: Rp {total:,}")
+        st.write(
+            f"## Total: Rp {total:,}"
+        )
 
         metode = st.selectbox(
             "Metode Pembayaran",
@@ -270,121 +276,156 @@ with menu_tab:
                 # =====================
                 struk_html = dedent(f"""
                 <div style="
-                    background-color: white;
-                    padding: 25px;
-                    border-radius: 15px;
-                    border: 2px dashed #999;
-                    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-                    margin-top: 20px;
-                    color: black;
-                    max-width: 450px;
-                    margin-left: auto;
-                    margin-right: auto;
-                    font-family: monospace;
+                    background-color:white;
+                    padding:25px;
+                    border-radius:15px;
+                    border:2px dashed #999;
+                    box-shadow:0px 4px 10px rgba(0,0,0,0.15);
+                    margin-top:20px;
+                    color:black;
+                    max-width:450px;
+                    margin-left:auto;
+                    margin-right:auto;
+                    font-family:monospace;
                 ">
 
                 <h2 style="
                     text-align:center;
-                    margin-bottom:15px;
+                    margin-bottom:10px;
                 ">
-                🥥 TOKO ES KELAPA
+                    🥥 TOKO ES KELAPA
                 </h2>
+
+                <p style="
+                    text-align:center;
+                    margin-top:-5px;
+                    color:gray;
+                ">
+                    Fresh Coconut Drink
+                </p>
 
                 <hr>
 
-                <p>
-                Tanggal : {transaksi['tanggal']}
-                </p>
+                <div style="
+                    margin-bottom:20px;
+                    line-height:1.8;
+                ">
+                    <b>Tanggal :</b>
+                    {transaksi['tanggal']}
+                </div>
 
                 <hr>
                 """)
 
+                # =====================
+                # DETAIL ITEM
+                # =====================
                 for item in transaksi["detail"]:
 
-    subtotal = (
-        item["harga"]
-        * item["qty"]
-    )
+                    subtotal = (
+                        item["harga"]
+                        * item["qty"]
+                    )
 
-    struk_html += dedent(f"""
-    <div style="
-        margin-bottom:18px;
-        padding:12px;
-        border-radius:10px;
-        background:#f8fafc;
-        font-size:16px;
-    ">
+                    struk_html += dedent(f"""
+                    <div style="
+                        margin-bottom:18px;
+                        padding:12px;
+                        border-radius:10px;
+                        background:#f8fafc;
+                        font-size:16px;
+                    ">
 
-        <div style="
-            font-weight:bold;
-            margin-bottom:8px;
-        ">
-            {item['nama']}
-        </div>
+                        <div style="
+                            font-weight:bold;
+                            margin-bottom:8px;
+                        ">
+                            {item['nama']}
+                        </div>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            margin-bottom:5px;
-        ">
-            <span>{item['qty']} x Rp {item['harga']:,}</span>
-            <span>Rp {subtotal:,}</span>
-        </div>
+                        <div style="
+                            display:flex;
+                            justify-content:space-between;
+                            margin-bottom:5px;
+                        ">
+                            <span>
+                                {item['qty']} x Rp {item['harga']:,}
+                            </span>
 
-    </div>
-    """)
+                            <span>
+                                Rp {subtotal:,}
+                            </span>
+                        </div>
 
+                    </div>
+                    """)
+
+                # =====================
+                # TOTAL
+                # =====================
                 struk_html += dedent(f"""
+
                 <hr>
 
                 <div style="
-    line-height:2;
-    font-size:16px;
-">
+                    line-height:2;
+                    font-size:16px;
+                ">
 
-<div style="
-    display:flex;
-    justify-content:space-between;
-">
-    <b>TOTAL</b>
-    <span>Rp {total:,}</span>
-</div>
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                    ">
+                        <b>TOTAL</b>
+                        <span>Rp {total:,}</span>
+                    </div>
 
-<div style="
-    display:flex;
-    justify-content:space-between;
-">
-    <b>PEMBAYARAN</b>
-    <span>{metode}</span>
-</div>
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                    ">
+                        <b>PEMBAYARAN</b>
+                        <span>{metode}</span>
+                    </div>
 
-<div style="
-    display:flex;
-    justify-content:space-between;
-">
-    <b>TUNAI</b>
-    <span>Rp {uang:,}</span>
-</div>
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                    ">
+                        <b>TUNAI</b>
+                        <span>Rp {uang:,}</span>
+                    </div>
 
-<div style="
-    display:flex;
-    justify-content:space-between;
-    color:green;
-    font-weight:bold;
-">
-    <b>KEMBALIAN</b>
-    <span>Rp {kembalian:,}</span>
-</div>
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        color:green;
+                        font-weight:bold;
+                        font-size:18px;
+                    ">
+                        <b>KEMBALIAN</b>
+                        <span>Rp {kembalian:,}</span>
+                    </div>
 
-</div>
+                </div>
 
                 <hr>
 
                 <p style="
                     text-align:center;
                     font-weight:bold;
+                    margin-top:20px;
+                    font-size:18px;
                 ">
-                Terima Kasih 🙏
+                    Terima Kasih 🙏
+                </p>
+
+                <p style="
+                    text-align:center;
+                    color:gray;
+                    font-size:13px;
+                ">
+                    Semoga harimu segar seperti kelapa 🥥
                 </p>
 
                 </div>
