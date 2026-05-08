@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import datetime
-from textwrap import dedent
 
 # =========================
 # CONFIG
@@ -138,6 +137,7 @@ with menu_tab:
                             break
 
                     if not found:
+
                         st.session_state.keranjang.append({
                             "nama": item["nama"],
                             "harga": item["harga"],
@@ -274,48 +274,35 @@ with menu_tab:
                 # =====================
                 # HTML STRUK
                 # =====================
-                struk_html = dedent(f"""
+                struk_html = f"""
                 <div style="
-                    background-color:white;
+                    background:white;
                     padding:25px;
                     border-radius:15px;
                     border:2px dashed #999;
-                    box-shadow:0px 4px 10px rgba(0,0,0,0.15);
-                    margin-top:20px;
-                    color:black;
                     max-width:450px;
-                    margin-left:auto;
-                    margin-right:auto;
+                    margin:auto;
                     font-family:monospace;
+                    color:black;
                 ">
 
-                <h2 style="
-                    text-align:center;
-                    margin-bottom:10px;
-                ">
-                    🥥 TOKO ES KELAPA
+                <h2 style="text-align:center;">
+                🥥 TOKO ES KELAPA
                 </h2>
 
-                <p style="
-                    text-align:center;
-                    margin-top:-5px;
-                    color:gray;
-                ">
-                    Fresh Coconut Drink
+                <p style="text-align:center;color:gray;">
+                Fresh Coconut Drink
                 </p>
 
                 <hr>
 
-                <div style="
-                    margin-bottom:20px;
-                    line-height:1.8;
-                ">
-                    <b>Tanggal :</b>
-                    {transaksi['tanggal']}
-                </div>
+                <p>
+                <b>Tanggal:</b>
+                {transaksi['tanggal']}
+                </p>
 
                 <hr>
-                """)
+                """
 
                 # =====================
                 # DETAIL ITEM
@@ -327,94 +314,88 @@ with menu_tab:
                         * item["qty"]
                     )
 
-                    struk_html += dedent(f"""
+                    struk_html += f"""
                     <div style="
-                        margin-bottom:18px;
-                        padding:12px;
+                        margin-bottom:15px;
+                        padding:10px;
+                        background:#f5f5f5;
                         border-radius:10px;
-                        background:#f8fafc;
-                        font-size:16px;
                     ">
 
-                        <div style="
-                            font-weight:bold;
-                            margin-bottom:8px;
-                        ">
-                            {item['nama']}
-                        </div>
+                    <b>{item['nama']}</b>
 
-                        <div style="
-                            display:flex;
-                            justify-content:space-between;
-                            margin-bottom:5px;
-                        ">
-                            <span>
+                    <table width="100%" style="
+                        margin-top:8px;
+                        font-size:15px;
+                    ">
+                        <tr>
+                            <td>
                                 {item['qty']} x Rp {item['harga']:,}
-                            </span>
+                            </td>
 
-                            <span>
+                            <td align="right">
                                 Rp {subtotal:,}
-                            </span>
-                        </div>
+                            </td>
+                        </tr>
+                    </table>
 
                     </div>
-                    """)
+                    """
 
                 # =====================
                 # TOTAL
                 # =====================
-                struk_html += dedent(f"""
+                struk_html += f"""
 
                 <hr>
 
-                <div style="
-                    line-height:2;
+                <table width="100%" style="
                     font-size:16px;
+                    line-height:2;
                 ">
 
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                    ">
-                        <b>TOTAL</b>
-                        <span>Rp {total:,}</span>
-                    </div>
+                <tr>
+                    <td><b>TOTAL</b></td>
+                    <td align="right">
+                        Rp {total:,}
+                    </td>
+                </tr>
 
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                    ">
-                        <b>PEMBAYARAN</b>
-                        <span>{metode}</span>
-                    </div>
+                <tr>
+                    <td><b>PEMBAYARAN</b></td>
+                    <td align="right">
+                        {metode}
+                    </td>
+                </tr>
 
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                    ">
-                        <b>TUNAI</b>
-                        <span>Rp {uang:,}</span>
-                    </div>
+                <tr>
+                    <td><b>TUNAI</b></td>
+                    <td align="right">
+                        Rp {uang:,}
+                    </td>
+                </tr>
 
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                        color:green;
-                        font-weight:bold;
-                        font-size:18px;
-                    ">
-                        <b>KEMBALIAN</b>
-                        <span>Rp {kembalian:,}</span>
-                    </div>
+                <tr>
+                    <td>
+                        <b style="color:green;">
+                        KEMBALIAN
+                        </b>
+                    </td>
 
-                </div>
+                    <td align="right">
+                        <b style="color:green;">
+                        Rp {kembalian:,}
+                        </b>
+                    </td>
+                </tr>
+
+                </table>
 
                 <hr>
 
                 <p style="
                     text-align:center;
                     font-weight:bold;
-                    margin-top:20px;
                     font-size:18px;
                 ">
                     Terima Kasih 🙏
@@ -429,7 +410,7 @@ with menu_tab:
                 </p>
 
                 </div>
-                """)
+                """
 
                 # tampilkan struk
                 st.markdown(
