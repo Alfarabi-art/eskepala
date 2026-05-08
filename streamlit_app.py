@@ -45,7 +45,7 @@ VIDEO BACKGROUND
 GLOBAL
 ========================= */
 .stApp {{
-    background: rgba(0,0,0,0.25);
+    background: rgba(0,0,0,0.20);
 }}
 
 h1, h2, h3, h4, h5, h6, p, label {{
@@ -54,10 +54,6 @@ h1, h2, h3, h4, h5, h6, p, label {{
 
 [data-testid="stHeader"] {{
     background: rgba(0,0,0,0);
-}}
-
-[data-testid="stToolbar"] {{
-    right: 2rem;
 }}
 
 /* =========================
@@ -111,19 +107,13 @@ STRUK
 ========================= */
 .struk-box {{
     background: white;
+    color: black !important;
     padding: 25px;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    font-family: monospace;
-    font-size: 16px;
-    line-height: 1.7;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
     overflow-x: auto;
-}}
-
-.struk-box pre {{
-    white-space: pre-wrap;
-    margin: 0;
-    color: black;
 }}
 
 .struk-box * {{
@@ -147,21 +137,9 @@ MOBILE
         text-align: center;
     }}
 
-    h2 {{
-        font-size: 24px !important;
-    }}
-
-    h3 {{
-        font-size: 20px !important;
-    }}
-
     .struk-box {{
-        font-size: 13px;
         padding: 15px;
-    }}
-
-    div[data-testid="stVerticalBlockBorderWrapper"] {{
-        padding: 12px;
+        font-size: 14px;
     }}
 
     .stButton button {{
@@ -361,7 +339,44 @@ with tab1:
                     "%Y-%m-%d %H:%M:%S"
                 )
 
-                isi = ""
+                st.success("Struk berhasil dicetak")
+
+                struk_html = f"""
+<div class="struk-box">
+
+<div style="text-align:center;">
+    <h2 style="margin-bottom:0;">
+        🥥 TOKO ES KELAPA
+    </h2>
+
+    <div style="
+        color:gray;
+        font-size:14px;
+        margin-bottom:15px;
+    ">
+        Fresh Coconut Drink
+    </div>
+</div>
+
+<hr>
+
+<div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:15px;
+">
+    <span>Tanggal</span>
+    <span>{tanggal}</span>
+</div>
+
+<hr>
+
+<table width="100%" style="
+    font-size:15px;
+    border-collapse:collapse;
+">
+"""
 
                 for item in st.session_state.keranjang:
 
@@ -370,72 +385,89 @@ with tab1:
                         * item["qty"]
                     )
 
-                    kiri = (
-                        f"{item['qty']} x "
-                        f"Rp {item['harga']:,}"
-                    )
+                    struk_html += f"""
+<tr>
+    <td colspan="2" style="
+        padding-top:10px;
+        font-weight:bold;
+    ">
+        {item['nama']}
+    </td>
+</tr>
 
-                    kanan = (
-                        f"Rp {subtotal:,}"
-                    )
+<tr>
+    <td style="
+        color:#555;
+        padding-bottom:10px;
+    ">
+        {item['qty']} x Rp {item['harga']:,}
+    </td>
 
-                    isi += (
-                        f"{item['nama']}\n"
-                    )
+    <td align="right" style="
+        padding-bottom:10px;
+    ">
+        Rp {subtotal:,}
+    </td>
+</tr>
+"""
 
-                    isi += (
-                        f"{kiri:<25}"
-                        f"{kanan:>15}\n"
-                    )
+                struk_html += f"""
 
-                    isi += (
-                        "-" * 40 + "\n"
-                    )
+</table>
 
-                isi += (
-                    f"{'TOTAL':<20}"
-                    f": Rp {total:,}\n"
-                )
+<hr>
 
-                isi += (
-                    f"{'PEMBAYARAN':<20}"
-                    f": {metode}\n"
-                )
+<table width="100%" style="
+    font-size:15px;
+">
 
-                isi += (
-                    f"{'TUNAI':<20}"
-                    f": Rp {uang:,}\n"
-                )
+<tr>
+    <td><b>TOTAL</b></td>
+    <td align="right">
+        <b>Rp {total:,}</b>
+    </td>
+</tr>
 
-                isi += (
-                    f"{'KEMBALIAN':<20}"
-                    f": Rp {kembalian:,}\n"
-                )
+<tr>
+    <td>PEMBAYARAN</td>
+    <td align="right">{metode}</td>
+</tr>
 
-                isi += "=" * 40 + "\n"
+<tr>
+    <td>TUNAI</td>
+    <td align="right">
+        Rp {uang:,}
+    </td>
+</tr>
 
-                isi += "Terima Kasih 🙏\n"
-                isi += "Semoga harimu segar 🥥"
+<tr>
+    <td>KEMBALIAN</td>
+    <td align="right" style="
+        color:green !important;
+        font-weight:bold;
+    ">
+        Rp {kembalian:,}
+    </td>
+</tr>
 
-                st.success("Struk berhasil dicetak")
+</table>
+
+<hr>
+
+<div style="
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+">
+    Terima Kasih 🙏 <br>
+    Semoga harimu segar 🥥
+</div>
+
+</div>
+"""
 
                 st.markdown(
-                    f"""
-<div class="struk-box">
-<pre>
-🥥 TOKO ES KELAPA
-Fresh Coconut Drink
-
-========================================
-
-Tanggal : {tanggal}
-
-========================================
-
-{isi}
-</pre>
-</div>
-""",
+                    struk_html,
                     unsafe_allow_html=True
                 )
 
