@@ -5,7 +5,7 @@ from datetime import datetime
 # CONFIG
 # =========================================
 st.set_page_config(
-    page_title="Kasir Es Kelapa Landai",
+    page_title="Kasir Es Kelapa Lanjai",
     layout="wide"
 )
 
@@ -185,7 +185,7 @@ if "riwayat" not in st.session_state:
 # =========================================
 # TITLE
 # =========================================
-st.title("🥥 Kasir Es Kelapa")
+st.title("🥥 Kasir Es Kelapa Lanjai")
 
 tab1, tab2 = st.tabs(["Kasir", "Keuangan"])
 
@@ -335,7 +335,7 @@ with tab1:
 margin:0;
 font-size:28px;
 ">
-🥥 TOKO ES KELAPA
+🥥 TOKO ES KELAPA LANJAI
 </h2>
 
 <div style="
