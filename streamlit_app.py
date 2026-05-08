@@ -11,16 +11,16 @@ st.set_page_config(
 )
 
 # =========================
-# BACKGROUND IMAGE
+# VIDEO BACKGROUND
 # =========================
-def get_base64(file_path):
+def get_video_base64(file_path):
     with open(file_path, "rb") as f:
         data = f.read()
 
     return base64.b64encode(data).decode()
 
-# GANTI jika nama file berbeda
-bg_image = get_base64("bg.jpg")
+# simpan bg.mp4 di folder yang sama
+bg_video = get_video_base64("bg.mp4")
 
 # =========================
 # DATA MENU
@@ -30,25 +30,25 @@ menu = [
         "id": 1,
         "nama": "Es Kelapa + Gula",
         "harga": 4000,
-        "gambar": "images/eskepalagula.jpg",
+        "gambar": "https://i.postimg.cc/0Q0n0G7M/es-kelapa-gula.jpg",
     },
     {
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "images/kelapasusu.jpg",
+        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg",
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "images/kelapamurni.jpg",
+        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg",
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "images/airkelapa.jpg",
+        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg",
     },
 ]
 
@@ -68,18 +68,20 @@ st.markdown(
     f"""
 <style>
 
-/* BACKGROUND */
-.stApp {{
-    background:
-        linear-gradient(
-            rgba(0,0,0,0.45),
-            rgba(0,0,0,0.45)
-        ),
-        url("data:image/jpg;base64,{bg_image}");
+/* VIDEO BACKGROUND */
+#bg-video {{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -100;
+}}
 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+/* OVERLAY */
+.stApp {{
+    background: rgba(0,0,0,0.45);
 }}
 
 /* TEXT */
@@ -92,8 +94,9 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
     background: rgba(255,255,255,0.12);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 15px;
 }}
 
 /* BUTTON */
@@ -102,9 +105,10 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
     color: white;
     border-radius: 12px;
     border: none;
-    padding: 10px;
+    padding: 12px;
     font-weight: bold;
     width: 100%;
+    font-size: 16px;
 }}
 
 .stButton button:hover {{
@@ -114,17 +118,89 @@ div[data-testid="stVerticalBlockBorderWrapper"] {{
 
 /* INPUT */
 .stNumberInput input {{
-    background-color: rgba(255,255,255,0.9);
-    color: black;
-}}
-
-.stSelectbox div[data-baseweb="select"] {{
-    background-color: rgba(255,255,255,0.9);
+    background-color: rgba(255,255,255,0.95);
     color: black;
     border-radius: 10px;
 }}
 
+.stSelectbox div[data-baseweb="select"] {{
+    background-color: rgba(255,255,255,0.95);
+    color: black;
+    border-radius: 10px;
+}}
+
+/* STRUK */
+.stCode {{
+    border-radius: 20px !important;
+    font-size: 16px !important;
+    padding: 15px !important;
+    background: white !important;
+    color: black !important;
+    overflow-x: auto;
+}}
+
+/* IMAGE */
+img {{
+    border-radius: 15px;
+}}
+
+/* MOBILE */
+@media (max-width: 768px) {{
+
+    h1 {{
+        font-size: 28px !important;
+        text-align: center;
+    }}
+
+    h2 {{
+        font-size: 22px !important;
+    }}
+
+    h3 {{
+        font-size: 20px !important;
+    }}
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {{
+        padding: 12px;
+        border-radius: 18px;
+    }}
+
+    .stButton button {{
+        font-size: 15px;
+        padding: 12px;
+    }}
+
+    .stCode {{
+        font-size: 13px !important;
+        padding: 10px !important;
+    }}
+
+    img {{
+        border-radius: 12px;
+    }}
+}}
+
+@media (max-width: 480px) {{
+
+    h1 {{
+        font-size: 24px !important;
+    }}
+
+    .stButton button {{
+        font-size: 14px;
+    }}
+
+    .stCode {{
+        font-size: 12px !important;
+    }}
+}}
+
 </style>
+
+<video autoplay muted loop id="bg-video">
+    <source src="data:video/mp4;base64,{bg_video}" type="video/mp4">
+</video>
+
 """,
     unsafe_allow_html=True
 )
@@ -360,7 +436,6 @@ with menu_tab:
                         "-" * 40 + "\n"
                     )
 
-                # TOTAL
                 struk += (
                     f"{'TOTAL':<20}"
                     f": Rp {total:,}\n"
