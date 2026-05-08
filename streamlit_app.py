@@ -5,7 +5,7 @@ from datetime import datetime
 # CONFIG
 # =========================================
 st.set_page_config(
-    page_title="Kasir Es Kelapa",
+    page_title="Kasir Es Kelapa Landai",
     layout="wide"
 )
 
