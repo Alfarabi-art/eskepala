@@ -330,14 +330,6 @@ with menu_tab:
                 # STRUK
                 # =====================
                 struk = ""
-                struk += "🥥 TOKO ES KELAPA\n"
-                struk += "Fresh Coconut Drink\n"
-                struk += "=" * 40 + "\n"
-                struk += (
-                    f"Tanggal : "
-                    f"{transaksi['tanggal']}\n"
-                )
-                struk += "=" * 40 + "\n"
 
                 # DETAIL ITEM
                 for item in transaksi["detail"]:
@@ -400,12 +392,54 @@ with menu_tab:
                     "Semoga harimu segar 🥥"
                 )
 
+                # =====================
                 # TAMPILKAN STRUK
-                st.code(struk)
+                # =====================
+                st.markdown(
+                    f"""
+                    <div style="
+                        background: white;
+                        color: black;
+                        padding: 25px;
+                        border-radius: 20px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+                        font-family: monospace;
+                        font-size: 18px;
+                        line-height: 1.8;
+                        border: 3px dashed #16a34a;
+                    ">
+
+<pre style="
+margin:0;
+white-space:pre-wrap;
+font-family:monospace;
+font-size:18px;
+color:black;
+">
+
+🥥 TOKO ES KELAPA
+Fresh Coconut Drink
+
+========================================
+
+Tanggal : {transaksi['tanggal']}
+
+========================================
+
+{struk}
+
+</pre>
+
+</div>
+""",
+                    unsafe_allow_html=True
+                )
 
                 st.balloons()
 
+                # =====================
                 # KOSONGKAN KERANJANG
+                # =====================
                 st.session_state.keranjang = []
 
 # =========================
