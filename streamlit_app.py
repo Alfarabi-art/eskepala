@@ -23,19 +23,19 @@ menu = [
         "id": 2,
         "nama": "Es Kelapa + Gula + Susu",
         "harga": 5000,
-        "gambar": "https://i.postimg.cc/vmL1YBfN/es-kelapa-susu.jpg",
+        "gambar": "images/kelapasusu.jpg",
     },
     {
         "id": 3,
         "nama": "Kelapa Murni",
         "harga": 10000,
-        "gambar": "https://i.postimg.cc/Z5W6tR6B/kelapa-murni.jpg",
+        "gambar": "images/kelapamurni.jpg",
     },
     {
         "id": 4,
         "nama": "Air Kelapa",
         "harga": 5000,
-        "gambar": "https://i.postimg.cc/4dM3tM0r/air-kelapa.jpg",
+        "gambar": "images/airkelapa.jpg",
     },
 ]
 
