@@ -1,24 +1,23 @@
 import streamlit as st
 from datetime import datetime
 
-# ====================================
+# =========================================
 # CONFIG
-# ====================================
+# =========================================
 st.set_page_config(
     page_title="Kasir Es Kelapa",
     layout="wide"
 )
 
-# ====================================
+# =========================================
 # VIDEO BACKGROUND
-# ====================================
-bg_video_url = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/main/bg.mp4"
+# =========================================
+VIDEO_URL = "https://raw.githubusercontent.com/Alfarabi-art/eskepala/main/bg.mp4"
 
-# ====================================
-# STYLE
-# ====================================
-st.markdown(
-    f"""
+# =========================================
+# CSS
+# =========================================
+st.markdown(f"""
 <style>
 
 /* =========================
@@ -35,35 +34,35 @@ VIDEO BACKGROUND
 }}
 
 .video-container video {{
-    min-width: 100%;
-    min-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    filter: brightness(0.45);
+    filter: brightness(0.35);
 }}
 
 /* =========================
 GLOBAL
 ========================= */
 .stApp {{
-    background: rgba(0,0,0,0.20);
-}}
-
-h1, h2, h3, h4, h5, h6, p, label {{
-    color: white !important;
+    background: transparent;
 }}
 
 [data-testid="stHeader"] {{
     background: rgba(0,0,0,0);
 }}
 
+h1, h2, h3, h4, h5, h6, p, label {{
+    color: white !important;
+}}
+
 /* =========================
 CARD
 ========================= */
 div[data-testid="stVerticalBlockBorderWrapper"] {{
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.10);
     padding: 15px;
     margin-bottom: 15px;
 }}
@@ -73,12 +72,12 @@ BUTTON
 ========================= */
 .stButton button {{
     width: 100%;
-    border-radius: 14px;
-    border: none;
     background: #16a34a;
     color: white;
-    font-weight: bold;
+    border-radius: 12px;
+    border: none;
     padding: 12px;
+    font-weight: bold;
     font-size: 16px;
 }}
 
@@ -107,24 +106,15 @@ STRUK
 ========================= */
 .struk-box {{
     background: white;
-    color: black !important;
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    overflow-x: auto;
+    overflow: hidden;
 }}
 
 .struk-box * {{
     color: black !important;
-}}
-
-/* =========================
-IMAGE
-========================= */
-img {{
-    border-radius: 15px;
+    font-family: Arial, sans-serif;
 }}
 
 /* =========================
@@ -133,35 +123,29 @@ MOBILE
 @media (max-width: 768px) {{
 
     h1 {{
-        font-size: 28px !important;
+        font-size: 30px !important;
         text-align: center;
     }}
 
     .struk-box {{
         padding: 15px;
-        font-size: 14px;
     }}
 
-    .stButton button {{
-        font-size: 14px;
-    }}
 }}
 
 </style>
 
 <div class="video-container">
-    <video autoplay muted loop playsinline webkit-playsinline>
-        <source src="{bg_video_url}" type="video/mp4">
+    <video autoplay muted loop playsinline>
+        <source src="{VIDEO_URL}" type="video/mp4">
     </video>
 </div>
 
-""",
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-# ====================================
+# =========================================
 # DATA MENU
-# ====================================
+# =========================================
 menu = [
     {
         "id": 1,
@@ -189,32 +173,32 @@ menu = [
     }
 ]
 
-# ====================================
+# =========================================
 # SESSION
-# ====================================
+# =========================================
 if "keranjang" not in st.session_state:
     st.session_state.keranjang = []
 
 if "riwayat" not in st.session_state:
     st.session_state.riwayat = []
 
-# ====================================
+# =========================================
 # TITLE
-# ====================================
+# =========================================
 st.title("🥥 Kasir Es Kelapa")
 
 tab1, tab2 = st.tabs(["Kasir", "Keuangan"])
 
-# ====================================
+# =========================================
 # TAB KASIR
-# ====================================
+# =========================================
 with tab1:
 
     col1, col2 = st.columns(2)
 
-    # =========================
+    # =====================================
     # MENU
-    # =========================
+    # =====================================
     with col1:
 
         st.subheader("Menu")
@@ -261,9 +245,9 @@ with tab1:
 
                     st.success("Berhasil ditambahkan")
 
-    # =========================
+    # =====================================
     # KERANJANG
-    # =========================
+    # =====================================
     with col2:
 
         st.subheader("Keranjang")
@@ -281,16 +265,16 @@ with tab1:
                 subtotal = item["harga"] * item["qty"]
                 total += subtotal
 
-                st.write(f"### {item['nama']}")
-                st.write(
-                    f"{item['qty']} x Rp {item['harga']:,}"
-                )
+                with st.container(border=True):
 
-                st.write(
-                    f"Subtotal : Rp {subtotal:,}"
-                )
+                    st.write(f"### {item['nama']}")
+                    st.write(
+                        f"{item['qty']} x Rp {item['harga']:,}"
+                    )
 
-                st.divider()
+                    st.write(
+                        f"Subtotal : Rp {subtotal:,}"
+                    )
 
         st.write(f"# Total: Rp {total:,}")
 
@@ -306,7 +290,8 @@ with tab1:
 
         uang = st.number_input(
             "Jumlah uang diterima",
-            min_value=0
+            min_value=0,
+            value=0
         )
 
         kembalian = uang - total
@@ -320,9 +305,9 @@ with tab1:
             else:
                 st.error("Uang kurang")
 
-        # =========================
+        # =====================================
         # CETAK STRUK
-        # =========================
+        # =====================================
         if st.button("Cetak Struk"):
 
             if total == 0:
@@ -331,7 +316,7 @@ with tab1:
 
             elif uang < total:
 
-                st.error("Pembayaran belum cukup")
+                st.error("Uang belum cukup")
 
             else:
 
@@ -345,37 +330,39 @@ with tab1:
 <div class="struk-box">
 
 <div style="text-align:center;">
-    <h2 style="margin-bottom:0;">
-        🥥 TOKO ES KELAPA
-    </h2>
 
-    <div style="
-        color:gray;
-        font-size:14px;
-        margin-bottom:15px;
-    ">
-        Fresh Coconut Drink
-    </div>
-</div>
-
-<hr>
+<h2 style="
+margin:0;
+font-size:28px;
+">
+🥥 TOKO ES KELAPA
+</h2>
 
 <div style="
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-    margin-bottom:15px;
+color:#666;
+font-size:14px;
+margin-top:5px;
 ">
-    <span>Tanggal</span>
-    <span>{tanggal}</span>
+Fresh Coconut Drink
 </div>
 
-<hr>
+</div>
 
-<table width="100%" style="
-    font-size:15px;
-    border-collapse:collapse;
+<hr style="margin:15px 0;">
+
+<div style="
+display:flex;
+justify-content:space-between;
+font-size:14px;
+margin-bottom:15px;
 ">
+
+<span>Tanggal</span>
+<span>{tanggal}</span>
+
+</div>
+
+<hr style="margin:15px 0;">
 """
 
                 for item in st.session_state.keranjang:
@@ -386,81 +373,104 @@ with tab1:
                     )
 
                     struk_html += f"""
-<tr>
-    <td colspan="2" style="
-        padding-top:10px;
-        font-weight:bold;
-    ">
-        {item['nama']}
-    </td>
-</tr>
 
-<tr>
-    <td style="
-        color:#555;
-        padding-bottom:10px;
-    ">
-        {item['qty']} x Rp {item['harga']:,}
-    </td>
+<div style="
+margin-bottom:18px;
+padding-bottom:12px;
+border-bottom:1px dashed #ccc;
+">
 
-    <td align="right" style="
-        padding-bottom:10px;
-    ">
-        Rp {subtotal:,}
-    </td>
-</tr>
+<div style="
+font-weight:bold;
+font-size:16px;
+margin-bottom:8px;
+">
+{item['nama']}
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+font-size:15px;
+">
+
+<div>
+{item['qty']} x Rp {item['harga']:,}
+</div>
+
+<div>
+Rp {subtotal:,}
+</div>
+
+</div>
+
+</div>
 """
 
                 struk_html += f"""
 
-</table>
-
-<hr>
-
-<table width="100%" style="
-    font-size:15px;
-">
-
-<tr>
-    <td><b>TOTAL</b></td>
-    <td align="right">
-        <b>Rp {total:,}</b>
-    </td>
-</tr>
-
-<tr>
-    <td>PEMBAYARAN</td>
-    <td align="right">{metode}</td>
-</tr>
-
-<tr>
-    <td>TUNAI</td>
-    <td align="right">
-        Rp {uang:,}
-    </td>
-</tr>
-
-<tr>
-    <td>KEMBALIAN</td>
-    <td align="right" style="
-        color:green !important;
-        font-weight:bold;
-    ">
-        Rp {kembalian:,}
-    </td>
-</tr>
-
-</table>
-
-<hr>
+<div style="margin-top:20px;">
 
 <div style="
-    text-align:center;
-    margin-top:15px;
-    font-size:14px;
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+font-size:16px;
 ">
-    Terima Kasih 🙏 <br>
-    Semoga harimu segar 🥥
+
+<div><b>TOTAL</b></div>
+<div><b>Rp {total:,}</b></div>
+
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+">
+
+<div>PEMBAYARAN</div>
+<div>{metode}</div>
+
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+">
+
+<div>TUNAI</div>
+<div>Rp {uang:,}</div>
+
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+font-size:18px;
+font-weight:bold;
+color:green;
+">
+
+<div>KEMBALIAN</div>
+<div>Rp {kembalian:,}</div>
+
+</div>
+
+</div>
+
+<hr style="margin:20px 0;">
+
+<div style="
+text-align:center;
+font-size:14px;
+color:#666;
+">
+
+Terima Kasih 🙏 <br>
+Semoga harimu segar 🥥
+
 </div>
 
 </div>
@@ -479,9 +489,9 @@ with tab1:
 
                 st.session_state.keranjang = []
 
-# ====================================
+# =========================================
 # TAB KEUANGAN
-# ====================================
+# =========================================
 with tab2:
 
     st.subheader("Laporan Keuangan")
